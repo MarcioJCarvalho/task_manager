@@ -1,0 +1,52 @@
+{% extends 'paginas/modelo.html' %}
+{% load static %}
+
+{% block titulo %}
+<title>Listas</title>
+{% endblock %}
+
+{% block contant %}
+<div class="d-flex">
+    <h1>Comentarios</h1>
+    <a href="{% url 'cadastro-comentario' %}" class="btn btn-primary btn-sm" title="Cadastrar"><img src="{% static 'img/add.svg' %}" alt="cadastrar" width="18px"></a>
+</div>
+<hr>
+
+<div
+    class="table-responsive"
+>
+    <table
+        class="table table-striped"
+    >
+        <thead>
+            <tr class="th">
+                <th scope="col">Comentario</th>
+                <th scope="col">Data</th>
+                <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for comentario in object_list %}
+            <tr>
+                <td>{{ comentario.text }}</td>
+                <td>{{ comentario.creation_date }}</td>
+                <td>
+                    <a href="{% url 'atualizar-comentario' comentario.pk %}" class="btn btn-warning btn-sm" title="Editar"><img src="{% static 'img/pencil-sharp.svg' %}" alt="editar" width="18px"></a>
+                    <a href="{% url 'deletar-comentario' comentario.pk %}" class="btn btn-danger btn-sm" title="Excluir"><img src="{% static 'img/trash.svg' %}" alt="excluir" width="18px"></a>
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="3">Nenhum registro.</td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %} 
