@@ -1,17 +1,9 @@
 from os import name
 import uuid
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
-class User(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = models.CharField(max_length=50, unique=True, verbose_name="Nome de usuário")
-    email = models.EmailField(verbose_name="E-mail")
-    password = models.CharField(max_length=128, verbose_name="Senha")
-
-    def __str__(self) -> str:
-        return "{}".format(self.username)
-    
 class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50, unique=True, verbose_name="Nome")
@@ -48,18 +40,10 @@ class Task(models.Model):
     completion_date = models.DateField(null=True, blank=True, verbose_name="Finalização")
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.PROTECT)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
-    comment = models.ForeignKey(Comment, null=True, blank=True, on_delete=models.PROTECT) 
+    comment = models.ForeignKey(Comment, null=True, blank=True, on_delete=models.PROTECT)
+    arquivo = models.FileField(upload_to='pdf/', null=True)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT, related_name="tasks_as_usuario") 
 
 
     def __str__(self) -> str:
         return "{}".format(self.title)
-    
-# cirar classe status
-
-class TaskList(models.Model):
-    # remover
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    name = models.CharField(max_length=50, unique=True, verbose_name="Nome")
-
-    def __str__(self) -> str:
-        return "{}".format(self.name)

@@ -1,7 +1,7 @@
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
 
-from .models import User, Task, TaskList, Comment, Category, Auditable
+from .models import Task, Comment, Category, Auditable
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,14 +9,6 @@ from braces.views import GroupRequiredMixin
 # Create your views here.
 
 ############# CADASTROS #############
-
-class UserCreate(LoginRequiredMixin, CreateView):
-    login_url = reverse_lazy('signin')
-    model = User
-    fields = ['username', 'email', 'password']
-    template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('usuarios')
-
 class CategoryCreate(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('signin')
     model = Category
@@ -38,30 +30,28 @@ class AuditableCreate(LoginRequiredMixin, CreateView):
     template_name = 'cadastros/form.html'
     success_url = reverse_lazy('auditorias')
 
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['titulo'] = "Cadastro de Auditorias"
+        context['botao'] = "Salvar"
+        return context
+
 class TaskCreate(GroupRequiredMixin, LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('signin')
     group_required = u'admin'
     model = Task
-    fields = ['title', 'description', 'due_date', 'creation_date', 'user', 'category', 'comment']
-    template_name = 'cadastros/form.html'
+    fields = ['title', 'description', 'due_date', 'creation_date', 'user', 'category', 'comment', 'arquivo']
+    template_name = 'cadastros/form-upload.html'
     success_url = reverse_lazy('tarefas')
-
-class TaskListCreate(LoginRequiredMixin, CreateView):
-    login_url = reverse_lazy('signin')
-    model = TaskList
-    fields = ['name']
-    template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('lista-tarefas')
+    
+    def form_valid(self, form):
+        form.instance.usuario = self.request.user
+        # não salvou no banco ainda
+        url = super().form_valid(form)
+        # já está salvo no banco
+        return url
 
 ############# ATUALIZAÇÂO #############
-
-class UserUpdate(LoginRequiredMixin, UpdateView):
-    login_url = reverse_lazy('signin')
-    model = User
-    fields = ['username', 'email', 'password']
-    template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('usuarios')
-
 class CategoryUpdate(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('signin')
     model = Category
@@ -87,25 +77,11 @@ class TaskUpdate(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('signin')
     group_required = u'admin'
     model = Task
-    fields = ['title', 'description', 'due_date', 'creation_date', 'completion_date', 'user', 'category', 'comment']
-    template_name = 'cadastros/form.html'
+    fields = ['title', 'description', 'due_date', 'creation_date', 'completion_date', 'user', 'category', 'comment', 'arquivo']
+    template_name = 'cadastros/form-upload.html'
     success_url = reverse_lazy('tarefas')
 
-class TaskListUpdate(LoginRequiredMixin, UpdateView):
-    login_url = reverse_lazy('signin')
-    model = TaskList
-    fields = ['name']
-    template_name = 'cadastros/form.html'
-    success_url = reverse_lazy('lista-tarefas')
-
 ############# DELETE #############
-
-class UserDelete(LoginRequiredMixin, DeleteView):
-    login_url = reverse_lazy('signin')
-    model = User
-    template_name = 'cadastros/form-delete.html'
-    success_url = reverse_lazy('usuarios')
-
 class CategoryDelete(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('signin')
     model = Category
@@ -129,21 +105,9 @@ class TaskDelete(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
     group_required = u'admin'
     model = Task
     template_name = 'cadastros/form-delete.html'
-    success_url = reverse_lazy('tarefas')
-
-class TaskListDelete(LoginRequiredMixin, DeleteView):
-    login_url = reverse_lazy('signin')
-    model = TaskList
-    template_name = 'cadastros/form-delete.html'
-    success_url = reverse_lazy('lista-tarefas')  
+    success_url = reverse_lazy('tarefas') 
 
 ############# LISTA #############
-
-class UserList(LoginRequiredMixin, ListView):
-    login_url = reverse_lazy('signin')
-    model = User
-    template_name = 'cadastros/lista/usuarios.html'
-
 class CategoryList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('signin')
     model = Category
@@ -165,7 +129,6 @@ class TasksList(GroupRequiredMixin, LoginRequiredMixin, ListView):
     model = Task
     template_name = 'cadastros/lista/tarefas.html'
 
-class TaskListList(LoginRequiredMixin, ListView):
-    login_url = reverse_lazy('signin')
-    model = TaskList
-    template_name = 'cadastros/lista/lista-tarefas.html'
+    def get_queryset(self):
+        self.object_list = Task.objects.filter(usuario=self.request.user)
+        return self.object_list

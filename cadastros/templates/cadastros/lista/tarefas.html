@@ -5,12 +5,15 @@
 <title>Listas</title>
 {% endblock %}
 
-{% block contant %}
+{% block content %}
 
-    <div>
-        Tarefas
-        <a href="{% url 'cadastro-tarefa' %}" type="button" class="float-right btn btn-sm btn-success">Adicionar <img src="{% static 'img/add.svg' %}" alt="cadastrar" width="18px"></a>
-    </div>
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="mb-0">Tarefas</h3>
+    <a href="{% url 'cadastro-tarefa' %}" type="button" class="btn btn-sm btn-success">
+        Adicionar <img src="{% static 'img/add.svg' %}" alt="cadastrar" width="18px">
+    </a>
+</div>
+
    
 
 <div
@@ -25,6 +28,8 @@
                 <th scope="col">Criação</th>
                 <th scope="col">Prazo</th>
                 <th scope="col">Finalização</th>
+                <th scope="col">Usuário</th>
+                <th scope="col">Aarquivo</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
@@ -36,6 +41,14 @@
                 <td>{{ tarefa.creation_date }}</td>
                 <td>{{ tarefa.due_date }}</td>
                 <td>{{ tarefa.completion_date }}</td>
+                <td>{{ tarefa.usuario }}</td>
+                <td>
+                    {% if tarefa.arquivo %}
+                        <a href="{{ tarefa.arquivo.url }}">Ver</a>
+                    {% else %}
+                        Sem arquivo
+                    {% endif %}
+                </td>
                 <td>
                     <a href="{% url 'atualizar-tarefa' tarefa.pk %}" class="btn btn-warning btn-sm" title="Editar"><img src="{% static 'img/pencil-sharp.svg' %}" alt="editar" width="18px"></a>
                     <a href="{% url 'deletar-tarefa' tarefa.pk %}" class="btn btn-danger btn-sm" title="Excluir"><img src="{% static 'img/trash.svg' %}" alt="excluir" width="18px"></a>
@@ -45,7 +58,7 @@
             {% empty %}
 
             <tr>
-                <td colspan="5">Nenhum registro.</td>
+                <td colspan="7">Nenhum registro.</td>
             </tr>
 
             {% endfor %}

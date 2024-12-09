@@ -1,17 +1,12 @@
-{% load static %}
+{% extends 'paginas/modelo.html' %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página inicial</title>
+{% block titulo %}
+<title>Página inicial</title>
+{% endblock %}
 
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-</head>
-<body>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, explicabo aliquid nobis eum dolorem, modi, exercitationem ipsum non nam ducimus temporibus architecto quisquam rerum earum vitae tenetur laudantium. Quae, rerum!
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, ipsam cumque! Asperiores voluptate repellendus repudiandae assumenda. Rerum placeat sit eos, veniam atque maxime ex iste molestiae laboriosam, debitis architecto sunt.
-    </p>
-</body>
-</html>
+{% block content %}
+<h1>Home</h1>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, explicabo aliquid nobis eum dolorem, modi, exercitationem ipsum non nam ducimus temporibus architecto quisquam rerum earum vitae tenetur laudantium. Quae, rerum!
+    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, ipsam cumque! Asperiores voluptate repellendus repudiandae assumenda. Rerum placeat sit eos, veniam atque maxime ex iste molestiae laboriosam, debitis architecto sunt.
+</p>
+{% endblock %}

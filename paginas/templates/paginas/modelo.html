@@ -14,81 +14,86 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    {% block navbar %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadows z-index-navbar">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'index' %}">Task Manager</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'sobre' %}">Sobre</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'uml' %}">UML</a>
-              </li>
-            </ul>
-            <ul class="navbar-nav">
-              {% if request.user.is_authenticated %}
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle darck" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-                  <img src="{% static 'img/person-circle-outline.svg' %}" alt="avatar" width="25x">
-                  <span id="username">{{ request.user }}</span>
-                </a>
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Profile</a>
-                  <a class="dropdown-item" href="#">Change password</a>
-                  <a class="dropdown-item"><div class="custom-control custom-switch">
-                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                    <label class="custom-control-label" for="customSwitch1">Dark theme</label>
-                  </div></a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="{% url 'logout' %}">Logout<img src="{% static 'img/log-out-outline.svg' %}" alt="sigout" width="25x"></a>
+  {% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadows z-index-navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'index' %}">Task Manager</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sobre' %}">Sobre</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'uml' %}">UML</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ms-auto" style="margin-right: 50px;">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+              <img src="{% static 'img/person-circle-outline.svg' %}" alt="avatar" width="25x">
+              <span id="username">{{ request.user }}</span>
+            </a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{% url 'atualizar-dados' %}">Perfil</a>
+              <a class="dropdown-item" href="#">Change password</a>
+              <a class="dropdown-item">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                  <label class="custom-control-label" for="customSwitch1">Dark theme</label>
                 </div>
-              </li>
-
-              {% else %}
-              <li class="nav-item">
-                <a class="dropdown-item" href="{% url 'signin' %}">Sign-in<img src="{% static 'img/log-in-outline.svg' %}" alt="signin" width="25x"></a>
-              </li>
-
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-    </nav>
-    {% endblock %}
-
-      <div class="inline">
-          {% block sidenave %}
-          <ul class="nav flex-column text-white-50 bg-dark col-2 full-height">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'tarefas' %}">Tarefas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'categorias' %}">Categorias</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'auditorias' %}">Auditoria</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'comentarios' %}">Comentários</a>
-            </li>
-          </ul>
-          {% endblock %}
-        <div class="col-10 margin-top">
-          {% block contant %}
-          {% endblock %}
-        </div>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout<img src="{% static 'img/log-out-outline.svg' %}" alt="sigout" width="25x"></a>
+            </div>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="btn btn-primary" href="{% url 'signin' %}">Sign-in<img src="{% static 'img/log-in-outline.svg' %}" alt="signin" width="25x"></a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
-    
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script src="{% static 'js/popper.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    </div>
+  </nav>
+  {% endblock %}
+
+  <div class="d-flex" style="margin-top: 55px;">
+    {% if not request.user.is_authenticated %}
+    {% else %}
+    {% block sidenave %}
+    <ul class="nav flex-column text-white-50 bg-dark position-fixed h-100" style="width: 250px;">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'tarefas' %}">Tarefas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'categorias' %}">Categorias</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'auditorias' %}">Auditoria</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'comentarios' %}">Comentários</a>
+      </li>
+    </ul>
+    {% endblock %}
+    {% endif %}
+  <div class="col-10 ms-auto" style="margin-left: 250px;">
+    {% block content %}
+    {% endblock %}
+  </div>
+</div>
+  
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/popper.min.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>
