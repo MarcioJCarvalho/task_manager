@@ -9,7 +9,7 @@ from .models import Perfil
 class UsuarioCreate(CreateView):
     template_name = "cadastros/form.html"
     form_class = UsuarioForm
-    succsess_url = reverse_lazy('signin')
+    success_url = reverse_lazy('signin')
 
     def form_valid(self, form):
         grupo = get_object_or_404(Group, name="users")

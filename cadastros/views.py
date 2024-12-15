@@ -38,7 +38,7 @@ class AuditableCreate(LoginRequiredMixin, CreateView):
 
 class TaskCreate(GroupRequiredMixin, LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('signin')
-    group_required = u'admin'
+    group_required = ['admin', 'users']
     model = Task
     fields = ['title', 'description', 'due_date', 'creation_date', 'user', 'category', 'comment', 'arquivo']
     template_name = 'cadastros/form-upload.html'
@@ -75,7 +75,7 @@ class AuditableUpdate(LoginRequiredMixin, UpdateView):
 
 class TaskUpdate(GroupRequiredMixin, LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('signin')
-    group_required = u'admin'
+    group_required = ['admin', 'users']
     model = Task
     fields = ['title', 'description', 'due_date', 'creation_date', 'completion_date', 'user', 'category', 'comment', 'arquivo']
     template_name = 'cadastros/form-upload.html'
@@ -102,7 +102,7 @@ class AuditableDelete(LoginRequiredMixin, DeleteView):
 
 class TaskDelete(GroupRequiredMixin, LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('signin')
-    group_required = u'admin'
+    group_required = ['admin', 'users']
     model = Task
     template_name = 'cadastros/form-delete.html'
     success_url = reverse_lazy('tarefas') 
@@ -125,10 +125,10 @@ class AuditableList(LoginRequiredMixin, ListView):
 
 class TasksList(GroupRequiredMixin, LoginRequiredMixin, ListView):
     login_url = reverse_lazy('signin')
-    group_required = u'admin'
+    group_required = ['admin', 'users']
     model = Task
     template_name = 'cadastros/lista/tarefas.html'
 
     def get_queryset(self):
         self.object_list = Task.objects.filter(usuario=self.request.user)
-        return self.object_list
+        return self.object_list.select_related('user', 'category', 'comment')
