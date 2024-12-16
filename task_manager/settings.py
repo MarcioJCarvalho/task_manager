@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'debug_toolbar',
     'django_cleanup.apps.CleanupConfig',
+    'django_filters',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

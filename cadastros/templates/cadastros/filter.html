@@ -1,0 +1,18 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<style>
+    form.row div[id*="div_id"] {
+        flex: 0 0 auto;
+        width: auto;
+    }    
+</style>
+
+<form class="row justify-content-end" method="get">
+    {{ filter.form|crispy }}
+
+    <div class="col-auto">
+        <label for="" class="form-label d-block">&nbsp;</label>
+        <button type="submit" class="btn btn-outline-primary btn-sm">Filtrar</button>
+    </div>
+</form>

@@ -5,8 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<h1>Home</h1>
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam, explicabo aliquid nobis eum dolorem, modi, exercitationem ipsum non nam ducimus temporibus architecto quisquam rerum earum vitae tenetur laudantium. Quae, rerum!
-    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ea, ipsam cumque! Asperiores voluptate repellendus repudiandae assumenda. Rerum placeat sit eos, veniam atque maxime ex iste molestiae laboriosam, debitis architecto sunt.
-</p>
+<h3>Página Inicial</h3>
+
+{% if user.perfil.nome_completo %}
+Bem vindo ao sistema <strong>{{ user.perfil.nome_completo }}</strong>.
+{% else %}
+Você precisa completar seu cadastro. Acesse os <a href="{% url 'atualizar-dados' %}"> meus dados</a> para atualizar.
+{% endif %} 
 {% endblock %}

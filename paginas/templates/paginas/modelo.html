@@ -12,6 +12,7 @@
 
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/datatables.min.css' %}">
 </head>
 <body>
   {% block navbar %}
@@ -86,7 +87,7 @@
     </ul>
     {% endblock %}
     {% endif %}
-  <div class="col-10 ms-auto" style="margin-left: 250px;">
+  <div class="col-10 ms-auto" style="margin-left: 250px; margin-top: 10px;">
     {% block content %}
     {% endblock %}
   </div>
@@ -95,5 +96,9 @@
   <script src="{% static 'js/jquery.js' %}"></script>
   <script src="{% static 'js/popper.min.js' %}"></script>
   <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/datatables.min.js' %}"></script>
+
+  {% block scripts %}
+  {% endblock %}
 </body>
 </html>

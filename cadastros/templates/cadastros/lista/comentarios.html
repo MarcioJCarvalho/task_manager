@@ -8,7 +8,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center">
     <h3 class="mb-0">Comentários</h3>
-    <a href="{% url 'cadastro-tarefa' %}" type="button" class="btn btn-sm btn-success">
+    <a href="{% url 'cadastro-comentario' %}" type="button" class="btn btn-sm btn-success">
         Adicionar <img src="{% static 'img/add.svg' %}" alt="cadastrar" width="18px">
     </a>
 </div>
@@ -16,8 +16,10 @@
 <div
     class="table-responsive"
 >
+    {% include 'cadastros/filter.html' %}
+
     <table
-        class="table table-striped"
+        class="table table-striped" id="comments-table"
     >
         <thead>
             <tr class="th">

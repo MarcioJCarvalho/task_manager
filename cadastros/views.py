@@ -6,6 +6,9 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from braces.views import GroupRequiredMixin
+
+from django_filters.views import FilterView
+from .filters import TaskFilter, CommentFilter
 # Create your views here.
 
 ############# CADASTROS #############
@@ -113,22 +116,26 @@ class CategoryList(LoginRequiredMixin, ListView):
     model = Category
     template_name = 'cadastros/lista/categorias.html'
 
-class CommentList(LoginRequiredMixin, ListView):
+class CommentList(LoginRequiredMixin, FilterView):
     login_url = reverse_lazy('signin')
     model = Comment
     template_name = 'cadastros/lista/comentarios.html'
+    paginate_by = 50
+    filterset_class = CommentFilter
 
 class AuditableList(LoginRequiredMixin, ListView):
     login_url = reverse_lazy('signin')
     model = Auditable
     template_name = 'cadastros/lista/auditorias.html'
 
-class TasksList(GroupRequiredMixin, LoginRequiredMixin, ListView):
+class TasksList(GroupRequiredMixin, LoginRequiredMixin, FilterView):
     login_url = reverse_lazy('signin')
     group_required = ['admin', 'users']
     model = Task
     template_name = 'cadastros/lista/tarefas.html'
+    paginate_by = 50
+    filterset_class = TaskFilter
 
     def get_queryset(self):
         self.object_list = Task.objects.filter(usuario=self.request.user)
-        return self.object_list.select_related('user', 'category', 'comment')
+        return self.object_list.select_related('user', 'category', 'comment') 
